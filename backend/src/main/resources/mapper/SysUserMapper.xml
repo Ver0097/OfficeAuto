@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa.system.user.mapper.SysUserMapper">
+
+    <resultMap id="SysUserResultMap" type="com.oa.system.user.entity.SysUser">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="real_name" property="realName"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="status" property="status"/>
+        <result column="avatar" property="avatar"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <!-- 根据用户名查询用户 -->
+    <select id="selectByUsername" resultMap="SysUserResultMap">
+        SELECT * FROM sys_user
+        WHERE username = #{username} AND deleted = 0
+    </select>
+
+    <!-- 根据ID查询用户 -->
+    <select id="selectById" resultMap="SysUserResultMap">
+        SELECT * FROM sys_user
+        WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insert" parameterType="com.oa.system.user.entity.SysUser">
+        INSERT INTO sys_user (
+            username, password, real_name, email, phone,
+            dept_id, status, avatar
+        ) VALUES (
+            #{username}, #{password}, #{realName}, #{email}, #{phone},
+            #{deptId}, #{status}, #{avatar}
+        )
+    </insert>
+
+</mapper>
