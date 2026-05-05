@@ -64,8 +64,8 @@ OfficeAuto/
 
 ## 任务列表
 
-- [ ] Task 1: 创建后端项目基础结构
-- [ ] Task 2: 创建公共模块（Result、Exception）
+- [√] Task 1: 创建后端项目基础结构
+- [√] Task 2: 创建公共模块（Result、Exception）
 - [ ] Task 3: 创建 JWT 工具类
 - [ ] Task 4: 创建验证码模块
 - [ ] Task 5: 创建 Security 配置和过滤器
