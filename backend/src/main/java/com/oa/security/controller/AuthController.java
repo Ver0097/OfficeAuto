@@ -35,6 +35,9 @@ public class AuthController {
      */
     @GetMapping("/captcha")
     public Result<CaptchaVO> getCaptcha() {
+        // TODO: 临时打印BCrypt密码哈希，测试完成后删除此行
+        log.info("BCrypt密码123456的哈希: {}", passwordEncoder.encode("123456"));
+
         CaptchaVO captcha = captchaService.generateCaptcha();
         return Result.success(captcha);
     }

@@ -10,23 +10,100 @@
           </div>
         </div>
       </el-header>
-      <el-main>
-        <el-card>
-          <h2>欢迎登录OA管理系统</h2>
-          <p>当前用户：{{ userStore.userInfo?.username }}</p>
-          <p>Token有效，系统运行正常。</p>
-        </el-card>
-      </el-main>
+      <el-container>
+        <el-aside width="200px">
+          <el-menu
+            :default-active="activeMenu"
+            class="side-menu"
+            @select="handleMenuSelect"
+          >
+            <el-menu-item index="/">
+              <el-icon><HomeFilled /></el-icon>
+              <span>首页</span>
+            </el-menu-item>
+            <el-sub-menu index="system">
+              <template #title>
+                <el-icon><Setting /></el-icon>
+                <span>系统管理</span>
+              </template>
+              <el-menu-item index="/system/user">
+                <el-icon><User /></el-icon>
+                <span>用户管理</span>
+              </el-menu-item>
+            </el-sub-menu>
+          </el-menu>
+        </el-aside>
+        <el-container class="main-container">
+          <div class="tabs-bar">
+            <el-tag
+              v-for="tab in tabsStore.tabs"
+              :key="tab.path"
+              :type="tabsStore.activePath === tab.path ? '' : 'info'"
+              :closable="tab.closable"
+              @click="handleTabClick(tab.path)"
+              @close="handleTabClose(tab.path)"
+              class="tab-item"
+            >
+              {{ tab.title }}
+            </el-tag>
+          </div>
+          <el-main>
+            <router-view />
+          </el-main>
+        </el-container>
+      </el-container>
     </el-container>
   </div>
 </template>
 
 <script setup>
 import { useUserStore } from '@/store/user'
-import { useRouter } from 'vue-router'
+import { useTabsStore } from '@/store/tabs'
+import { useRouter, useRoute } from 'vue-router'
+import { HomeFilled, Setting, User } from '@element-plus/icons-vue'
+import { computed, watch } from 'vue'
 
 const userStore = useUserStore()
+const tabsStore = useTabsStore()
 const router = useRouter()
+const route = useRoute()
+
+const activeMenu = computed(() => route.path)
+
+// 监听路由变化，自动添加标签
+watch(
+  () => route.path,
+  (path) => {
+    const title = route.meta?.title || '未命名'
+    tabsStore.addTab(path, title)
+  },
+  { immediate: true }
+)
+
+// 菜单选择
+const handleMenuSelect = (index) => {
+  const menuItem = findMenuItem(index)
+  const title = menuItem?.title || route.meta?.title || '未命名'
+  tabsStore.addTab(index, title)
+  router.push(index)
+}
+
+// 查找菜单项标题
+const findMenuItem = (path) => {
+  if (path === '/') return { title: '首页' }
+  if (path === '/system/user') return { title: '用户管理' }
+  return null
+}
+
+// 标签点击
+const handleTabClick = (path) => {
+  tabsStore.switchTab(path, router)
+}
+
+// 标签关闭
+const handleTabClose = (path) => {
+  tabsStore.closeTab(path, router)
+}
 
 const handleLogout = async () => {
   await userStore.logout()
@@ -63,7 +140,39 @@ const handleLogout = async () => {
   gap: 10px;
 }
 
+.el-aside {
+  background-color: #fff;
+  border-right: 1px solid #e6e6e6;
+}
+
+.side-menu {
+  border-right: none;
+  height: 100%;
+}
+
+.main-container {
+  flex-direction: column;
+}
+
+.tabs-bar {
+  background-color: #fff;
+  padding: 8px 20px;
+  border-bottom: 1px solid #e6e6e6;
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  height: 40px;
+  line-height: 24px;
+}
+
+.tab-item {
+  cursor: pointer;
+}
+
 .el-main {
   background-color: #f5f5f5;
+  padding: 20px;
+  flex: 1;
+  overflow: auto;
 }
 </style>

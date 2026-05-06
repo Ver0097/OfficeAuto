@@ -10,9 +10,22 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Home',
     component: () => import('@/views/home/index.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('@/views/home/dashboard.vue'),
+        meta: { title: '首页' }
+      },
+      {
+        path: 'system/user',
+        name: 'User',
+        component: () => import('@/views/system/user/index.vue'),
+        meta: { requiresAuth: true, title: '用户管理' }
+      }
+    ]
   },
   {
     path: '/:pathMatch(.*)*',

@@ -26,7 +26,10 @@ public enum ResultCode {
     CAPTCHA_EXPIRED(1002, "验证码已过期"),
     LOGIN_ERROR(1003, "用户名或密码错误"),
     USER_DISABLED(1004, "账户已被禁用"),
-    USER_EXISTS(1005, "用户名已存在");
+    USER_EXISTS(1005, "用户名已存在"),
+    USER_NOT_FOUND(1006, "用户不存在"),
+    PASSWORD_FORMAT_ERROR(1007, "密码格式错误"),
+    CANNOT_DELETE_ADMIN(1008, "不能删除管理员账户");
 
     private final Integer code;
     private final String message;

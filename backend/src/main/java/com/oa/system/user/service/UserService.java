@@ -1,5 +1,7 @@
 package com.oa.system.user.service;
 
+import com.oa.common.page.PageResult;
+import com.oa.system.user.dto.*;
 import com.oa.system.user.entity.SysUser;
 
 /**
@@ -7,19 +9,41 @@ import com.oa.system.user.entity.SysUser;
  */
 public interface UserService {
 
-    /**
-     * 根据用户名查询用户
-     *
-     * @param username 用户名
-     * @return 用户实体
-     */
     SysUser getByUsername(String username);
+    SysUser getById(Long id);
 
     /**
-     * 根据ID查询用户
-     *
-     * @param id 用户ID
-     * @return 用户实体
+     * 分页查询用户列表
      */
-    SysUser getById(Long id);
+    PageResult<UserListVO> listUsers(UserQueryDTO queryDTO);
+
+    /**
+     * 获取用户详情
+     */
+    UserDetailVO getUserDetail(Long id);
+
+    /**
+     * 创建用户
+     */
+    void createUser(UserCreateDTO createDTO);
+
+    /**
+     * 更新用户
+     */
+    void updateUser(UserUpdateDTO updateDTO);
+
+    /**
+     * 删除用户
+     */
+    void deleteUser(Long id);
+
+    /**
+     * 重置密码
+     */
+    void resetPassword(Long id, String password);
+
+    /**
+     * 切换状态
+     */
+    void changeStatus(Long id, Integer status);
 }
