@@ -30,6 +30,14 @@
                 <el-icon><User /></el-icon>
                 <span>用户管理</span>
               </el-menu-item>
+              <el-menu-item index="/system/config">
+                <el-icon><Document /></el-icon>
+                <span>参数管理</span>
+              </el-menu-item>
+              <el-menu-item index="/system/dict">
+                <el-icon><List /></el-icon>
+                <span>字典管理</span>
+              </el-menu-item>
             </el-sub-menu>
           </el-menu>
         </el-aside>
@@ -60,7 +68,7 @@
 import { useUserStore } from '@/store/user'
 import { useTabsStore } from '@/store/tabs'
 import { useRouter, useRoute } from 'vue-router'
-import { HomeFilled, Setting, User } from '@element-plus/icons-vue'
+import { HomeFilled, Setting, User, Document, List } from '@element-plus/icons-vue'
 import { computed, watch } from 'vue'
 
 const userStore = useUserStore()
@@ -92,6 +100,8 @@ const handleMenuSelect = (index) => {
 const findMenuItem = (path) => {
   if (path === '/') return { title: '首页' }
   if (path === '/system/user') return { title: '用户管理' }
+  if (path === '/system/config') return { title: '参数管理' }
+  if (path === '/system/dict') return { title: '字典管理' }
   return null
 }
 
