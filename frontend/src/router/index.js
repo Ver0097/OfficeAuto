@@ -24,6 +24,18 @@ const routes = [
         name: 'User',
         component: () => import('@/views/system/user/index.vue'),
         meta: { requiresAuth: true, title: '用户管理' }
+      },
+      {
+        path: 'system/config',
+        name: 'Config',
+        component: () => import('@/views/system/config/index.vue'),
+        meta: { requiresAuth: true, title: '参数管理' }
+      },
+      {
+        path: 'system/dict',
+        name: 'Dict',
+        component: () => import('@/views/system/dict/index.vue'),
+        meta: { requiresAuth: true, title: '字典管理' }
       }
     ]
   },

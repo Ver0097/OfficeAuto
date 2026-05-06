@@ -29,7 +29,17 @@ public enum ResultCode {
     USER_EXISTS(1005, "用户名已存在"),
     USER_NOT_FOUND(1006, "用户不存在"),
     PASSWORD_FORMAT_ERROR(1007, "密码格式错误"),
-    CANNOT_DELETE_ADMIN(1008, "不能删除管理员账户");
+    CANNOT_DELETE_ADMIN(1008, "不能删除管理员账户"),
+
+    // 参数管理错误 101x
+    CONFIG_KEY_EXISTS(1011, "参数键名已存在"),
+    CONFIG_NOT_FOUND(1012, "参数不存在"),
+
+    // 字典管理错误 102x
+    DICT_TYPE_EXISTS(1021, "字典类型编码已存在"),
+    DICT_TYPE_NOT_FOUND(1022, "字典类型不存在"),
+    DICT_DATA_EXISTS(1023, "字典数据已存在"),
+    DICT_DATA_NOT_FOUND(1024, "字典数据不存在");
 
     private final Integer code;
     private final String message;

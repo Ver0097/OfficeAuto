@@ -76,14 +76,74 @@ INSERT INTO sys_dept (name, parent_id, sort, leader, phone, status)
 VALUES ('总公司', 0, 1, '张总', '13800138000', 1);
 
 -- =====================================================
+-- 系统参数表 (sys_config)
+-- 【状态：已执行】
+-- =====================================================
+DROP TABLE IF EXISTS sys_config;
+CREATE TABLE sys_config (
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+    config_key      VARCHAR(50) NOT NULL COMMENT '参数键名',
+    config_value    VARCHAR(500) NOT NULL COMMENT '参数键值',
+    config_name     VARCHAR(100) NOT NULL COMMENT '参数名称',
+    config_type     VARCHAR(20) DEFAULT 'text' COMMENT '参数类型：text/number/boolean/json',
+    remark          VARCHAR(200) DEFAULT NULL COMMENT '备注',
+    status          TINYINT DEFAULT 1 COMMENT '状态：0禁用 1启用',
+    create_time     DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time     DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    deleted         TINYINT DEFAULT 0 COMMENT '逻辑删除：0正常 1删除',
+
+    UNIQUE KEY uk_config_key (config_key, deleted)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统参数表';
+
+-- =====================================================
+-- 字典类型表 (sys_dict_type)
+-- 【状态：已执行】
+-- =====================================================
+DROP TABLE IF EXISTS sys_dict_type;
+CREATE TABLE sys_dict_type (
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+    dict_type       VARCHAR(50) NOT NULL COMMENT '字典类型编码',
+    dict_name       VARCHAR(100) NOT NULL COMMENT '字典类型名称',
+    remark          VARCHAR(200) DEFAULT NULL COMMENT '备注',
+    status          TINYINT DEFAULT 1 COMMENT '状态：0禁用 1启用',
+    create_time     DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time     DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    deleted         TINYINT DEFAULT 0 COMMENT '逻辑删除：0正常 1删除',
+
+    UNIQUE KEY uk_dict_type (dict_type, deleted)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典类型表';
+
+-- =====================================================
+-- 字典数据表 (sys_dict_data)
+-- 【状态：已执行】
+-- =====================================================
+DROP TABLE IF EXISTS sys_dict_data;
+CREATE TABLE sys_dict_data (
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+    dict_type       VARCHAR(50) NOT NULL COMMENT '字典类型编码',
+    dict_label      VARCHAR(100) NOT NULL COMMENT '字典标签',
+    dict_value      VARCHAR(100) NOT NULL COMMENT '字典键值',
+    dict_sort       INT DEFAULT 0 COMMENT '字典排序',
+    remark          VARCHAR(200) DEFAULT NULL COMMENT '备注',
+    status          TINYINT DEFAULT 1 COMMENT '状态：0禁用 1启用',
+    create_time     DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time     DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    deleted         TINYINT DEFAULT 0 COMMENT '逻辑删除：0正常 1删除',
+
+    INDEX idx_dict_type (dict_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典数据表';
+
+-- =====================================================
 -- 说明
 -- =====================================================
 --
--- 1. 本脚本创建 OA 管理系统所需的基础用户表和部门表
+-- 1. 本脚本创建 OA 管理系统所需的基础表结构
 -- 2. 默认管理员账号：admin / 123456
 -- 3. 密码使用 BCrypt 算法加密，成本因子为 10
--- 4. 后续可根据需要添加角色表、菜单表等
--- 5. 执行状态说明：
+-- 4. sys_config: 系统参数配置表
+-- 5. sys_dict_type: 字典类型定义表
+-- 6. sys_dict_data: 字典数据项表
+-- 7. 执行状态说明：
 --    - 【状态：已执行】 表示已在数据库执行
 --    - 【状态：待执行】 表示需要手动执行
 --
