@@ -1,7 +1,7 @@
 <template>
   <div class="user-container">
     <!-- 搜索栏 -->
-    <el-card class="search-card">
+    <div class="search-section">
       <el-form :inline="true" :model="queryParams" class="search-form">
         <el-form-item label="用户名">
           <el-input v-model="queryParams.username" placeholder="请输入用户名" clearable />
@@ -20,58 +20,62 @@
           <el-button @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
-    </el-card>
+    </div>
 
-    <!-- 操作栏 -->
-    <el-card class="table-card">
-      <el-row class="toolbar">
+    <!-- 表格区域 -->
+    <div class="table-section">
+      <!-- 操作栏 -->
+      <div class="toolbar">
         <el-button type="primary" @click="handleAdd">新增用户</el-button>
-      </el-row>
+      </div>
 
       <!-- 用户表格 -->
-      <el-table :data="userList" v-loading="loading" border stripe>
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="username" label="用户名" width="120" />
-        <el-table-column prop="realName" label="真实姓名" width="120" />
-        <el-table-column prop="email" label="邮箱" width="180" />
-        <el-table-column prop="phone" label="手机号" width="130" />
-        <el-table-column prop="deptName" label="部门" width="120" />
-        <el-table-column prop="status" label="状态" width="100">
-          <template #default="{ row }">
-            <el-tag :type="row.status === 1 ? 'success' : 'danger'">
-              {{ row.status === 1 ? '启用' : '禁用' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="180" />
-        <el-table-column label="操作" fixed="right" width="200">
-          <template #default="{ row }">
-            <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
-            <el-button type="warning" link @click="handleResetPwd(row)">重置密码</el-button>
-            <el-button
-              :type="row.status === 1 ? 'danger' : 'success'"
-              link
-              @click="handleStatus(row)"
-            >
-              {{ row.status === 1 ? '禁用' : '启用' }}
-            </el-button>
-            <el-button type="danger" link @click="handleDelete(row)" v-if="row.username !== 'admin'">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="table-wrapper">
+        <el-table :data="userList" v-loading="loading" border stripe height="100%">
+          <el-table-column prop="id" label="ID" width="80" />
+          <el-table-column prop="username" label="用户名" width="120" />
+          <el-table-column prop="realName" label="真实姓名" width="120" />
+          <el-table-column prop="email" label="邮箱" width="180" />
+          <el-table-column prop="phone" label="手机号" width="130" />
+          <el-table-column prop="deptName" label="部门" width="120" />
+          <el-table-column prop="status" label="状态" width="100">
+            <template #default="{ row }">
+              <el-tag :type="row.status === 1 ? 'success' : 'danger'">
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createTime" label="创建时间" width="180" />
+          <el-table-column label="操作" fixed="right" width="200">
+            <template #default="{ row }">
+              <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
+              <el-button type="warning" link @click="handleResetPwd(row)">重置密码</el-button>
+              <el-button
+                :type="row.status === 1 ? 'danger' : 'success'"
+                link
+                @click="handleStatus(row)"
+              >
+                {{ row.status === 1 ? '禁用' : '启用' }}
+              </el-button>
+              <el-button type="danger" link @click="handleDelete(row)" v-if="row.username !== 'admin'">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
 
       <!-- 分页 -->
-      <el-pagination
-        v-model:current-page="queryParams.pageNum"
-        v-model:page-size="queryParams.pageSize"
-        :page-sizes="[10, 20, 50, 100]"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handlePageChange"
-        class="pagination"
-      />
-    </el-card>
+      <div class="pagination-wrapper">
+        <el-pagination
+          v-model:current-page="queryParams.pageNum"
+          v-model:page-size="queryParams.pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handlePageChange"
+        />
+      </div>
+    </div>
 
     <!-- 新增/编辑对话框 -->
     <el-dialog
@@ -331,11 +335,19 @@ loadUserList()
 
 <style scoped>
 .user-container {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px;
+  background-color: #f5f5f5;
 }
 
-.search-card {
-  margin-bottom: 20px;
+.search-section {
+  background-color: #fff;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
 }
 
 .search-form {
@@ -343,12 +355,30 @@ loadUserList()
   flex-wrap: wrap;
 }
 
+.table-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 15px 20px;
+  min-height: 0;
+  border-radius: 4px;
+}
+
 .toolbar {
+  flex-shrink: 0;
   margin-bottom: 15px;
 }
 
-.pagination {
-  margin-top: 20px;
+.table-wrapper {
+  flex: 1;
+  min-height: 0;
+}
+
+.pagination-wrapper {
+  flex-shrink: 0;
+  padding-top: 15px;
+  display: flex;
   justify-content: flex-end;
 }
 </style>

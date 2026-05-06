@@ -115,11 +115,21 @@ const handleLogout = async () => {
 .home-container {
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-container > .el-container {
+  flex: 1;
+  display: flex;
+  min-height: 0;
 }
 
 .el-header {
   background-color: #409EFF;
   color: white;
+  height: 60px;
+  flex-shrink: 0;
 }
 
 .header-content {
@@ -143,6 +153,7 @@ const handleLogout = async () => {
 .el-aside {
   background-color: #fff;
   border-right: 1px solid #e6e6e6;
+  flex-shrink: 0;
 }
 
 .side-menu {
@@ -151,7 +162,10 @@ const handleLogout = async () => {
 }
 
 .main-container {
+  flex: 1;
   flex-direction: column;
+  min-height: 0;
+  display: flex;
 }
 
 .tabs-bar {
@@ -171,8 +185,10 @@ const handleLogout = async () => {
 
 .el-main {
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 0;
   flex: 1;
-  overflow: auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 </style>
